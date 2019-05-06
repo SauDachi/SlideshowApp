@@ -28,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
         //次へボタン
         next_button.setOnClickListener {
-            // 自動送りの間は、進むボタンと戻るボタンはタップ不可にする
             if (!status) {
                 if (urlList.size > 0) {
                     // 最後の画像表示時に進むボタンを押したら最初の画像を表示
@@ -43,7 +42,6 @@ class MainActivity : AppCompatActivity() {
 
         //戻るボタン
         back_button.setOnClickListener {
-            //自動送りの間は、進むボタンと戻るボタンはタップ不可
             if (!status) {
                 if (urlList.size > 0) {
                     // 最初の画像表示時に戻るボタンを押したら最後の画像を表示
@@ -101,11 +99,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     //一時停止/再生のボタン表示切り替え
+    // 自動送りの間は、進むボタンと戻るボタンはタップ不可にする
     private  fun setControlButtonText() {
         if (status) {
             slide_button.text = "一時停止"
+            next_button.isClickable = false
+            back_button.isClickable = false
         }  else {
             slide_button.text = "再生"
+            next_button.isClickable = true
+            back_button.isClickable = true
         }
     }
 
