@@ -9,6 +9,7 @@ import android.provider.MediaStore
 import android.content.ContentUris
 import android.net.Uri
 import android.os.Handler
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
@@ -35,7 +36,8 @@ class MainActivity : AppCompatActivity() {
                         index = 0
                     }
                     //1つ先の画像を表示
-                    imageView.setImageURI(urlList.get(index++))
+                    imageView.setImageURI(urlList.get(index))
+                    index++
                 }
             }
         }
@@ -49,7 +51,8 @@ class MainActivity : AppCompatActivity() {
                         index = urlList.size -1;
                     }
                     //1つ後の画像を表示
-                    imageView.setImageURI(urlList.get(index--))
+                    imageView.setImageURI(urlList.get(index))
+                    index--
                 }
             }
         }
@@ -68,7 +71,8 @@ class MainActivity : AppCompatActivity() {
                                 if (index >= urlList.size) {
                                     index = 0
                                 }
-                                imageView.setImageURI(urlList.get(index++))
+                                imageView.setImageURI(urlList.get(index))
+                                index++
                             }
                         }
                     }, 2000, 2000) // 最初に始動させるまで 2秒、ループの間隔を 2秒 に設定
@@ -96,6 +100,7 @@ class MainActivity : AppCompatActivity() {
         else {
             getContentsInfo()
         }
+        //拒否した場合になにか出す（すなっくばーとか）
     }
 
     //一時停止/再生のボタン表示切り替え
@@ -103,12 +108,12 @@ class MainActivity : AppCompatActivity() {
     private  fun setControlButtonText() {
         if (status) {
             slide_button.text = "一時停止"
-            next_button.isClickable = false
-            back_button.isClickable = false
+            next_button.setEnabled(false)
+            back_button.setEnabled(false)
         }  else {
             slide_button.text = "再生"
-            next_button.isClickable = true
-            back_button.isClickable = true
+            next_button.setEnabled(true)
+            back_button.setEnabled(true)
         }
     }
 
@@ -118,6 +123,8 @@ class MainActivity : AppCompatActivity() {
             PERMISSIONS_REQUEST_CODE ->
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     getContentsInfo()
+                }else{
+                    Log.d("ANDROID", "許可されなかった")
                 }
         }
     }
